@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fish Station — subtractive bass synth (VST3 / CLAP)</title>
+<meta name="description" content="Fish Station — an original monophonic subtractive bass synth for macOS. VST3 + CLAP, Apple Silicon. Free download, signed & notarized.">
+<style>
+  :root{
+    --bg:#0b1310; --panel:#14201a; --lime:#9ec84e; --bronze:#b69a5b;
+    --brass1:#e2c884; --brass2:#6a5528; --ink:#0c1411; --text:#c6cec2; --muted:#8a9488;
+    --frame:#7a6638;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--text); line-height:1.55;
+    background:
+      radial-gradient(120% 90% at 50% -10%, #23483a 0%, rgba(23,58,45,0) 55%),
+      linear-gradient(180deg,#183a2e 0%,#0e211b 45%,#060d0a 100%);
+    background-attachment:fixed;
+    min-height:100vh; padding:clamp(20px,5vw,64px) 20px;
+  }
+  .wrap{max-width:760px;margin:0 auto}
+  .card{
+    background:linear-gradient(180deg, rgba(20,32,25,.96), rgba(12,20,17,.96));
+    border:2px solid var(--frame); border-radius:18px;
+    padding:clamp(28px,5vw,52px);
+    box-shadow:0 24px 70px rgba(0,0,0,.55), inset 0 1px 0 rgba(226,200,132,.15);
+    position:relative;
+  }
+  .screw{position:absolute;width:12px;height:12px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #efe0a6, #8a7038 55%, #2f2614);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.4)}
+  .screw.tl{top:12px;left:12px}.screw.tr{top:12px;right:12px}
+  .screw.bl{bottom:12px;left:12px}.screw.br{bottom:12px;right:12px}
+  header{text-align:center;margin-bottom:34px}
+  h1{font-size:clamp(38px,9vw,64px);letter-spacing:.06em;font-weight:800;color:var(--lime);
+     text-shadow:0 2px 14px rgba(158,200,78,.25)}
+  .series{color:var(--bronze);letter-spacing:.34em;font-size:12px;margin-top:6px;text-transform:uppercase}
+  .tagline{margin-top:18px;color:var(--text);font-size:clamp(15px,2.6vw,18px);max-width:46ch;margin-inline:auto}
+  .cta{text-align:center;margin:34px 0 14px}
+  .btn{
+    display:inline-block;background:var(--lime);color:var(--ink);
+    font-weight:700;font-size:18px;text-decoration:none;
+    padding:15px 34px;border-radius:12px;letter-spacing:.01em;
+    box-shadow:0 10px 26px rgba(158,200,78,.28); transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(158,200,78,.4)}
+  .meta{text-align:center;color:var(--muted);font-size:13px;margin-top:12px;letter-spacing:.02em}
+  .meta b{color:var(--bronze);font-weight:600}
+  .rule{height:1px;background:linear-gradient(90deg,transparent,var(--frame),transparent);margin:34px 0}
+  h2{color:var(--bronze);font-size:13px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px}
+  ol{margin:0 0 4px 1.1em;color:var(--text)} ol li{margin:7px 0;padding-left:4px}
+  ol li code{background:rgba(158,200,78,.12);color:var(--lime);padding:1px 6px;border-radius:5px;font-size:.9em}
+  .feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+  .feat div{background:rgba(255,255,255,.03);border:1px solid rgba(122,102,56,.5);border-radius:9px;
+    padding:11px 13px;font-size:14px}
+  .feat b{color:var(--lime);font-weight:600}
+  .note{color:var(--muted);font-size:13px;margin-top:10px}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px;line-height:1.7}
+  a{color:var(--lime)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <span class="screw tl"></span><span class="screw tr"></span>
+    <span class="screw bl"></span><span class="screw br"></span>
+
+    <header>
+      <h1>FISH STATION</h1>
+      <div class="series">· Largemouth Bass Series ·</div>
+      <p class="tagline">An original monophonic subtractive bass synth — three oscillators into a
+        Moog-style ladder filter, with envelopes, an LFO and an arpeggiator.</p>
+    </header>
+
+    <div class="cta">
+      <a class="btn" href="https://github.com/jamcgrath/fish-station/releases/latest/download/Fish-Station.pkg">
+        Download for macOS
+      </a>
+      <div class="meta">Apple&nbsp;Silicon · VST3&nbsp;+&nbsp;CLAP · <b>signed &amp; notarized</b> by Apple</div>
+    </div>
+
+    <div class="rule"></div>
+
+    <h2>Install</h2>
+    <ol>
+      <li>Open the downloaded <code>Fish-Station.pkg</code> and follow the installer.</li>
+      <li>Rescan plug-ins in your DAW (in Ableton: Settings → Plug-Ins).</li>
+      <li>Add <b>Fish Station</b> to a track as an instrument.</li>
+    </ol>
+    <p class="note">Installs to <code>/Library/Audio/Plug-Ins</code> (VST3 + CLAP). Requires macOS on
+      Apple&nbsp;Silicon. Ableton loads the VST3; hosts with CLAP support can use either.</p>
+
+    <div class="rule"></div>
+
+    <h2>Inside</h2>
+    <div class="feat">
+      <div><b>3 oscillators</b> — saw/square + sub, detune, hard sync</div>
+      <div><b>Ladder filter</b> — 12/24 dB, resonance to self-oscillation</div>
+      <div><b>2 envelopes</b> — amp + filter (env / velocity / key-track)</div>
+      <div><b>LFO</b> — free or tempo-synced → pitch / filter / amp</div>
+      <div><b>Arpeggiator</b> — up / down / up-down, tempo-synced</div>
+      <div><b>Resizable UI</b> — 100 / 150 / 200 % zoom</div>
+    </div>
+
+    <footer>
+      Built from scratch in Rust · not a port or reverse-engineering of any product.<br>
+      © James McGrath
+    </footer>
+  </div>
+</div>
+</body>
+</html>
