@@ -107,6 +107,14 @@
     border-radius:50%;background:var(--sonar);transform:translateY(-50%)}
   .specs b{color:var(--phosphor);font-weight:500}
 
+  /* ---- panel screenshot ---- */
+  .shot{margin:0}
+  .shot__frame{margin:32px 0 0;border-radius:12px;overflow:hidden;
+    border:1px solid rgba(255,255,255,.05);box-shadow:0 34px 90px rgba(0,0,0,.55)}
+  .shot__frame img{display:block;width:100%;height:auto}
+  .shot__cap{margin:15px 0 0;font-family:var(--mono);font-size:12.5px;color:var(--murk);
+    letter-spacing:.02em;line-height:1.6}
+
   /* ---- signal path ---- */
   .section{padding:clamp(46px,7vw,80px) 0}
   .band{border-top:1px solid var(--hair)}
@@ -306,6 +314,22 @@
         <li>Apple Silicon</li>
         <li>Resizable UI · <b>100–200%</b></li>
       </ul>
+    </section>
+
+    <section class="section band">
+      <p class="eyebrow">The panel</p>
+      <h2 class="section__title">Every control on one&nbsp;face.</h2>
+      <figure class="shot">
+        <div class="shot__frame">
+          <picture>
+            <source type="image/webp" srcset="img/fish-station.webp">
+            <img src="img/fish-station.jpg" width="1870" height="1166"
+                 alt="The Fish Station plugin panel — a dark brushed-metal face with brass-bezelled knobs, grouped into Oscillators, Filter, LFO, Arpeggiator, Amp and Filter envelopes, and Master, with a patch browser across the top."
+                 loading="lazy" decoding="async">
+          </picture>
+        </div>
+        <figcaption class="shot__cap">No menu-diving — every parameter is on the front panel, and it resizes to 100 / 150 / 200 %.</figcaption>
+      </figure>
     </section>
 
     <section class="section band">
