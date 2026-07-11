@@ -3,114 +3,375 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fish Station — subtractive bass synth (VST3 / CLAP)</title>
-<meta name="description" content="Fish Station — an original monophonic subtractive bass synth for macOS. VST3 + CLAP, Apple Silicon. Free download, signed & notarized.">
+<title>Fish Station — a bass synth sounded from the deep (VST3 / CLAP)</title>
+<meta name="description" content="Fish Station is an original monophonic subtractive bass synth for macOS — three oscillators into a Moog-style ladder filter, with envelopes, an LFO and an arpeggiator. VST3 + CLAP, Apple Silicon, free, signed & notarized.">
+<meta property="og:title" content="Fish Station — subtractive bass, sounded from the deep">
+<meta property="og:description" content="A monophonic bass synth for macOS. VST3 + CLAP, Apple Silicon. Free, signed & notarized.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
   :root{
-    --bg:#0b1310; --panel:#14201a; --lime:#9ec84e; --bronze:#b69a5b;
-    --brass1:#e2c884; --brass2:#6a5528; --ink:#0c1411; --text:#c6cec2; --muted:#8a9488;
-    --frame:#7a6638;
+    --abyss:#05100b;   --deep:#081410;   --deep-2:#0c1c16;
+    --phosphor:#b6ea55; --sonar:#3fb6a6;  --brass:#cdaa6b;
+    --foam:#eef3e8;    --murk:#8b988a;    --hair:rgba(148,190,150,.14);
+    --display:'Archivo',system-ui,-apple-system,sans-serif;
+    --body:'Inter',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
   body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    color:var(--text); line-height:1.55;
+    font-family:var(--body); color:var(--foam); line-height:1.6;
     background:
-      radial-gradient(120% 90% at 50% -10%, #23483a 0%, rgba(23,58,45,0) 55%),
-      linear-gradient(180deg,#183a2e 0%,#0e211b 45%,#060d0a 100%);
-    background-attachment:fixed;
-    min-height:100vh; padding:clamp(20px,5vw,64px) 20px;
+      radial-gradient(140% 100% at 50% -20%, #123e31 0%, rgba(10,32,26,0) 52%),
+      radial-gradient(90% 60% at 88% 4%, rgba(63,182,166,.10) 0%, rgba(63,182,166,0) 60%),
+      linear-gradient(180deg,#0c231b 0%,#081713 40%,var(--abyss) 100%);
+    background-attachment:fixed; min-height:100vh;
+    -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:760px;margin:0 auto}
-  .card{
-    background:linear-gradient(180deg, rgba(20,32,25,.96), rgba(12,20,17,.96));
-    border:2px solid var(--frame); border-radius:18px;
-    padding:clamp(28px,5vw,52px);
-    box-shadow:0 24px 70px rgba(0,0,0,.55), inset 0 1px 0 rgba(226,200,132,.15);
-    position:relative;
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  a{color:var(--phosphor)}
+  :focus-visible{outline:2px solid var(--phosphor);outline-offset:3px;border-radius:4px}
+
+  /* ---- shared type devices ---- */
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--sonar);display:inline-flex;gap:.7em;align-items:center;
   }
-  .screw{position:absolute;width:12px;height:12px;border-radius:50%;
-    background:radial-gradient(circle at 35% 30%, #efe0a6, #8a7038 55%, #2f2614);
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,.4)}
-  .screw.tl{top:12px;left:12px}.screw.tr{top:12px;right:12px}
-  .screw.bl{bottom:12px;left:12px}.screw.br{bottom:12px;right:12px}
-  header{text-align:center;margin-bottom:34px}
-  h1{font-size:clamp(38px,9vw,64px);letter-spacing:.06em;font-weight:800;color:var(--lime);
-     text-shadow:0 2px 14px rgba(158,200,78,.25)}
-  .series{color:var(--bronze);letter-spacing:.34em;font-size:12px;margin-top:6px;text-transform:uppercase}
-  .tagline{margin-top:18px;color:var(--text);font-size:clamp(15px,2.6vw,18px);max-width:46ch;margin-inline:auto}
-  .cta{text-align:center;margin:34px 0 14px}
-  .btn{
-    display:inline-block;background:var(--lime);color:var(--ink);
-    font-weight:700;font-size:18px;text-decoration:none;
-    padding:15px 34px;border-radius:12px;letter-spacing:.01em;
-    box-shadow:0 10px 26px rgba(158,200,78,.28); transition:transform .12s ease, box-shadow .12s ease;
+  .eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,var(--sonar),transparent)}
+  .section__title{
+    font-family:var(--display);font-weight:800;letter-spacing:-.015em;line-height:1.04;
+    font-size:clamp(26px,4.4vw,40px);color:var(--foam);margin:16px 0 0;
   }
-  .btn:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(158,200,78,.4)}
-  .meta{text-align:center;color:var(--muted);font-size:13px;margin-top:12px;letter-spacing:.02em}
-  .meta b{color:var(--bronze);font-weight:600}
-  .rule{height:1px;background:linear-gradient(90deg,transparent,var(--frame),transparent);margin:34px 0}
-  h2{color:var(--bronze);font-size:13px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px}
-  ol{margin:0 0 4px 1.1em;color:var(--text)} ol li{margin:7px 0;padding-left:4px}
-  ol li code{background:rgba(158,200,78,.12);color:var(--lime);padding:1px 6px;border-radius:5px;font-size:.9em}
-  .feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-  .feat div{background:rgba(255,255,255,.03);border:1px solid rgba(122,102,56,.5);border-radius:9px;
-    padding:11px 13px;font-size:14px}
-  .feat b{color:var(--lime);font-weight:600}
-  .note{color:var(--muted);font-size:13px;margin-top:10px}
-  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px;line-height:1.7}
-  a{color:var(--lime)}
+
+  /* ---- top bar ---- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;
+    padding:22px 0 18px;gap:16px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand__mark{width:30px;height:30px;flex:none;filter:drop-shadow(0 0 6px rgba(182,234,85,.35))}
+  .brand__name{font-family:var(--display);font-weight:800;letter-spacing:.02em;
+    font-size:19px;color:var(--foam)}
+  .chip{font-family:var(--mono);font-size:12px;color:var(--brass);text-decoration:none;
+    border:1px solid rgba(205,170,107,.4);border-radius:999px;padding:6px 13px;letter-spacing:.04em;
+    white-space:nowrap;transition:border-color .15s ease,color .15s ease}
+  .chip:hover{border-color:var(--brass);color:var(--foam)}
+
+  /* ---- hero ---- */
+  .hero{padding:clamp(34px,7vw,74px) 0 clamp(30px,5vw,54px)}
+  .hero__title{
+    font-family:var(--display);font-weight:800;letter-spacing:-.025em;line-height:1.0;
+    font-size:clamp(44px,9.4vw,92px);color:var(--foam);margin:20px 0 0;
+    text-shadow:0 4px 40px rgba(0,0,0,.4);
+  }
+  .hero__title em{font-style:normal;color:var(--phosphor);
+    text-shadow:0 0 30px rgba(182,234,85,.35)}
+  .hero__lead{margin:22px 0 0;max-width:52ch;font-size:clamp(16px,2.1vw,19px);color:#cdd6cb}
+  .hero__lead b{color:var(--foam);font-weight:600}
+
+  /* ---- the sounder (signature) ---- */
+  .sounder{position:relative;margin:clamp(30px,5vw,46px) 0 0;border-radius:16px;overflow:hidden;
+    border:1px solid rgba(63,182,166,.3);
+    box-shadow:0 30px 80px rgba(0,0,0,.55), inset 0 0 0 1px rgba(0,0,0,.4),
+      inset 0 1px 0 rgba(182,234,85,.12);
+    background:var(--deep)}
+  .sounder svg{display:block;width:100%;height:auto}
+  .sweep{animation:sweep 5.4s linear infinite}
+  @keyframes sweep{from{transform:translateX(-40px)}to{transform:translateX(1030px)}}
+  .wave-draw{stroke-dasharray:1600;stroke-dashoffset:1600;animation:draw 2.4s .25s ease-out forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  /* ---- cta ---- */
+  .cta{margin:clamp(30px,5vw,44px) 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:18px 24px}
+  .btn{display:inline-flex;align-items:center;gap:11px;
+    font-family:var(--display);font-weight:700;font-size:17px;letter-spacing:.01em;
+    color:#08150f;text-decoration:none;padding:15px 26px;border-radius:12px;
+    background:linear-gradient(180deg,#c6f36a,#9bd345);
+    box-shadow:0 14px 30px rgba(155,211,69,.28),inset 0 1px 0 rgba(255,255,255,.4);
+    transition:transform .14s ease,box-shadow .14s ease}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 20px 40px rgba(155,211,69,.4),inset 0 1px 0 rgba(255,255,255,.5)}
+  .btn:active{transform:translateY(0)}
+  .btn svg{width:18px;height:18px}
+  .cta__trust{font-family:var(--mono);font-size:13px;color:var(--murk);line-height:1.7}
+  .cta__trust b{color:var(--brass);font-weight:500}
+  .cta__trust a{color:var(--sonar);text-decoration:none;border-bottom:1px solid rgba(63,182,166,.4)}
+
+  .specs{list-style:none;display:flex;flex-wrap:wrap;gap:0;margin:26px 0 0;
+    font-family:var(--mono);font-size:12.5px;color:var(--murk);letter-spacing:.03em}
+  .specs li{padding:0 16px;position:relative}
+  .specs li:first-child{padding-left:0}
+  .specs li+li::before{content:"";position:absolute;left:0;top:50%;width:3px;height:3px;
+    border-radius:50%;background:var(--sonar);transform:translateY(-50%)}
+  .specs b{color:var(--phosphor);font-weight:500}
+
+  /* ---- signal path ---- */
+  .section{padding:clamp(46px,7vw,80px) 0}
+  .band{border-top:1px solid var(--hair)}
+  .chain__flow{display:flex;align-items:stretch;gap:0;margin:34px 0 0}
+  .stage{flex:1;background:linear-gradient(180deg,rgba(18,34,27,.7),rgba(9,20,16,.7));
+    border:1px solid var(--hair);border-radius:13px;padding:20px 20px 22px;min-width:0}
+  .stage__idx{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--sonar)}
+  .stage__name{font-family:var(--display);font-weight:600;font-size:19px;margin:9px 0 8px;color:var(--foam)}
+  .stage__desc{font-size:14.5px;color:#c2ccc0;line-height:1.55}
+  .chain__arrow{flex:none;width:46px;display:flex;align-items:center;justify-content:center;color:var(--phosphor)}
+  .chain__arrow svg{width:20px;height:20px;filter:drop-shadow(0 0 5px rgba(182,234,85,.4))}
+  .chain__tap{font-family:var(--mono);font-size:12.5px;color:var(--brass);margin:18px 0 14px;letter-spacing:.03em}
+  .chain__mods{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+  .mod{background:rgba(63,182,166,.05);border:1px solid rgba(63,182,166,.18);border-radius:10px;
+    padding:13px 15px;font-size:14px;color:#c2ccc0;line-height:1.5}
+  .mod b{color:var(--phosphor);font-weight:600;font-family:var(--display);letter-spacing:.01em;
+    display:block;margin-bottom:3px;font-size:14.5px}
+
+  /* ---- install ---- */
+  .steps{list-style:none;counter-reset:step;margin:32px 0 0;display:grid;gap:14px;max-width:720px}
+  .steps li{display:flex;gap:18px;align-items:flex-start;
+    background:linear-gradient(180deg,rgba(18,34,27,.55),rgba(9,20,16,.55));
+    border:1px solid var(--hair);border-radius:12px;padding:16px 20px}
+  .steps__n{flex:none;font-family:var(--mono);font-weight:500;font-size:14px;color:var(--phosphor);
+    width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+    border:1px solid rgba(182,234,85,.4);background:rgba(182,234,85,.06)}
+  .steps p{font-size:15px;color:#cbd4c8;line-height:1.55}
+  .steps b{color:var(--foam);font-weight:600}
+  .steps code, .install__note code{font-family:var(--mono);font-size:.86em;
+    background:rgba(63,182,166,.12);color:var(--sonar);padding:1.5px 6px;border-radius:5px}
+  .install__note{margin:20px 0 0;font-size:13.5px;color:var(--murk);max-width:640px;line-height:1.6}
+
+  /* ---- footer ---- */
+  .footer{border-top:1px solid var(--hair);padding:34px 0 46px;
+    display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between}
+  .footer p{font-family:var(--mono);font-size:12px;color:var(--murk);letter-spacing:.03em;line-height:1.7}
+  .footer a{color:var(--sonar);text-decoration:none}
+  .footer__deep{color:var(--brass)}
+
+  /* ---- entrance motion ---- */
+  .rise{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .rise.d1{animation-delay:.05s}.rise.d2{animation-delay:.13s}.rise.d3{animation-delay:.21s}
+  .rise.d4{animation-delay:.32s}.rise.d5{animation-delay:.44s}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+  @media (max-width:640px){
+    .chain__flow{flex-direction:column;gap:0}
+    .chain__arrow{width:100%;height:34px}
+    .chain__arrow svg{transform:rotate(90deg)}
+    .topbar{padding-top:18px}
+    .specs li{padding:2px 12px}.specs li:first-child{padding-left:0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .sweep{animation:none;transform:translateX(640px)}
+    .wave-draw{animation:none;stroke-dashoffset:0}
+    .rise{opacity:1;animation:none}
+    .btn:hover{transform:none}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="card">
-    <span class="screw tl"></span><span class="screw tr"></span>
-    <span class="screw bl"></span><span class="screw br"></span>
 
-    <header>
-      <h1>FISH STATION</h1>
-      <div class="series">· Largemouth Bass Series ·</div>
-      <p class="tagline">An original monophonic subtractive bass synth — three oscillators into a
-        Moog-style ladder filter, with envelopes, an LFO and an arpeggiator.</p>
-    </header>
-
-    <div class="cta">
-      <a class="btn" href="https://github.com/jamcgrath/fish-station/releases/latest/download/Fish-Station.pkg">
-        Download for macOS
-      </a>
-      <div class="meta">Apple&nbsp;Silicon · VST3&nbsp;+&nbsp;CLAP · <b>signed &amp; notarized</b> by Apple</div>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="7" cy="16" r="2.4" fill="#b6ea55"/>
+        <path d="M11 16a7 7 0 0 1 5-6.6" stroke="#b6ea55" stroke-width="2" stroke-linecap="round"/>
+        <path d="M11 16a7 7 0 0 0 5 6.6" stroke="#b6ea55" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+        <path d="M18 16a12 12 0 0 1 8.5-11.5" stroke="#3fb6a6" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+        <path d="M18 16a12 12 0 0 0 8.5 11.5" stroke="#3fb6a6" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+      </svg>
+      <span class="brand__name">Fish&nbsp;Station</span>
     </div>
+    <a class="chip" href="https://github.com/jamcgrath/fish-station/releases">v0.1.1 · Apple&nbsp;Silicon</a>
+  </header>
 
-    <div class="rule"></div>
+  <main>
+    <section class="hero">
+      <p class="eyebrow rise d1">Largemouth Bass Series · VST3 + CLAP</p>
+      <h1 class="hero__title rise d2">Low end,<br>sounded from<br>the&nbsp;<em>deep</em>.</h1>
+      <p class="hero__lead rise d3">Fish Station is an original monophonic <b>subtractive bass synth</b> for
+        macOS — three oscillators into a Moog-style ladder filter, with two envelopes, an LFO and an
+        arpeggiator. Written from scratch in Rust.</p>
 
-    <h2>Install</h2>
-    <ol>
-      <li>Open the downloaded <code>Fish-Station.pkg</code> and follow the installer.</li>
-      <li>Rescan plug-ins in your DAW (in Ableton: Settings → Plug-Ins).</li>
-      <li>Add <b>Fish Station</b> to a track as an instrument.</li>
-    </ol>
-    <p class="note">Installs to <code>/Library/Audio/Plug-Ins</code> (VST3 + CLAP). Requires macOS on
-      Apple&nbsp;Silicon. Ableton loads the VST3; hosts with CLAP support can use either.</p>
+      <figure class="sounder rise d4" role="img"
+        aria-label="A fishing depth-sounder screen. A glowing phosphor sounding-trace crosses the display over a sub-bass floor, with the depth scale marked in hertz from 18 kHz at the surface down to 20 hertz in the deep, and a largemouth bass echo down in the low end.">
+        <svg viewBox="0 0 1000 360" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2f6f5e" stop-opacity=".5"/>
+              <stop offset="1" stop-color="#081410" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="fishGrad" gradientUnits="userSpaceOnUse" x1="0" y1="-20" x2="0" y2="15">
+              <stop offset="0" stop-color="#82e2cb"/>
+              <stop offset="1" stop-color="#2c7565"/>
+            </linearGradient>
+            <linearGradient id="trail" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#b6ea55" stop-opacity="0"/>
+              <stop offset="1" stop-color="#b6ea55" stop-opacity=".16"/>
+            </linearGradient>
+            <radialGradient id="vign" cx="50%" cy="42%" r="72%">
+              <stop offset="55%" stop-color="#05100b" stop-opacity="0"/>
+              <stop offset="100%" stop-color="#05100b" stop-opacity=".62"/>
+            </radialGradient>
+            <filter id="glow" x="-20%" y="-40%" width="140%" height="180%">
+              <feGaussianBlur stdDeviation="4.5" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
 
-    <div class="rule"></div>
+          <rect width="1000" height="360" fill="#081410"/>
 
-    <h2>Inside</h2>
-    <div class="feat">
-      <div><b>3 oscillators</b> — saw/square + sub, detune, hard sync</div>
-      <div><b>Ladder filter</b> — 12/24 dB, resonance to self-oscillation</div>
-      <div><b>2 envelopes</b> — amp + filter (env / velocity / key-track)</div>
-      <div><b>LFO</b> — free or tempo-synced → pitch / filter / amp</div>
-      <div><b>Arpeggiator</b> — up / down / up-down, tempo-synced</div>
-      <div><b>Resizable UI</b> — 100 / 150 / 200 % zoom</div>
-    </div>
+          <!-- depth grid -->
+          <g stroke="#3fb6a6">
+            <g stroke-opacity=".05">
+              <line x1="125" y1="0" x2="125" y2="360"/><line x1="250" y1="0" x2="250" y2="360"/>
+              <line x1="375" y1="0" x2="375" y2="360"/><line x1="500" y1="0" x2="500" y2="360"/>
+              <line x1="625" y1="0" x2="625" y2="360"/><line x1="750" y1="0" x2="750" y2="360"/>
+              <line x1="875" y1="0" x2="875" y2="360"/>
+            </g>
+            <g stroke-opacity=".1">
+              <line x1="0" y1="76" x2="1000" y2="76"/><line x1="0" y1="148" x2="1000" y2="148"/>
+              <line x1="0" y1="220" x2="1000" y2="220"/><line x1="0" y1="292" x2="1000" y2="292"/>
+            </g>
+          </g>
 
-    <footer>
-      Built from scratch in Rust · not a port or reverse-engineering of any product.<br>
-      © James McGrath
-    </footer>
-  </div>
+          <!-- sub-bass floor / lakebed -->
+          <path d="M0,360 L0,300 C120,272 220,300 340,286 C470,271 560,300 700,288 C820,279 900,300 1000,290 L1000,360 Z"
+                fill="url(#floor)"/>
+          <path d="M0,300 C120,272 220,300 340,286 C470,271 560,300 700,288 C820,279 900,300 1000,290"
+                fill="none" stroke="#3fb6a6" stroke-opacity=".55" stroke-width="1.5"/>
+
+          <!-- largemouth bass echo, down in the deep -->
+          <g transform="translate(614,260) scale(1.4)" opacity=".62">
+            <path d="M-8,-5 C-14,-8 -20,-11 -28,-15 C-24,-9 -22,-4 -22,0 C-22,4 -24,9 -28,15 C-20,11 -14,8 -8,5 Z"
+                  fill="url(#fishGrad)"/>
+            <path d="M-8,-5 C-2,-9 6,-10 12,-13 C16,-19 22,-20 26,-14 C30,-12 34,-11 40,-9
+                     C48,-7 55,-4 62,1 L64,0 C62,2 60,3 57,4 C52,6 46,8 40,9
+                     C36,10 34,13 30,13 C24,13 18,11 12,11 C8,11 5,14 1,13
+                     C-3,12 -6,9 -8,5 Z"
+                  fill="url(#fishGrad)"/>
+            <circle cx="54" cy="-3" r="2.1" fill="#05100b" opacity=".9"/>
+          </g>
+
+          <!-- fish-arch echoes -->
+          <g fill="none" stroke="#b6ea55" stroke-width="2.5" stroke-linecap="round" opacity=".8" filter="url(#glow)">
+            <path d="M262,248 Q286,222 310,248"/>
+            <path d="M470,242 Q490,220 510,242"/>
+          </g>
+
+          <!-- the sounding trace -->
+          <path class="wave-draw" filter="url(#glow)"
+                d="M20,152 C120,92 180,212 262,172 S382,84 462,152 S602,210 690,150 S822,112 900,160"
+                fill="none" stroke="#b6ea55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+          <!-- sweep head -->
+          <g class="sweep">
+            <rect x="-120" y="0" width="120" height="360" fill="url(#trail)"/>
+            <line x1="0" y1="0" x2="0" y2="360" stroke="#b6ea55" stroke-width="2" opacity=".9"/>
+          </g>
+
+          <rect width="1000" height="360" fill="url(#vign)"/>
+
+          <!-- readouts -->
+          <text x="26" y="40" font-family="'IBM Plex Mono',monospace" font-size="15" letter-spacing="2"
+                fill="#aee34f" fill-opacity=".85">SONAR · CH 1</text>
+          <text x="26" y="338" font-family="'IBM Plex Mono',monospace" font-size="14" letter-spacing="1.5"
+                fill="#cdaa6b" fill-opacity=".85">RANGE 20 Hz – 18 kHz</text>
+          <g font-family="'IBM Plex Mono',monospace" font-size="14" fill="#cdaa6b" fill-opacity=".8"
+             text-anchor="end" letter-spacing="1">
+            <text x="978" y="42">18k</text>
+            <text x="978" y="152">2k</text>
+            <text x="978" y="224">200</text>
+            <text x="978" y="300">20 Hz</text>
+          </g>
+        </svg>
+      </figure>
+
+      <div class="cta rise d5">
+        <a class="btn" href="https://github.com/jamcgrath/fish-station/releases/latest/download/Fish-Station.pkg">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v12m0 0l-4.5-4.5M12 15l4.5-4.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 19h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+          Download for macOS
+        </a>
+        <p class="cta__trust"><b>Signed &amp; notarized</b> by Apple · installs clean, no Gatekeeper warnings<br>
+          Free · <a href="https://github.com/jamcgrath/fish-station/releases">every release &amp; changelog</a></p>
+      </div>
+
+      <ul class="specs">
+        <li><b>Monophonic</b></li>
+        <li>VST3 + CLAP</li>
+        <li>Apple Silicon</li>
+        <li>Resizable UI · <b>100–200%</b></li>
+      </ul>
+    </section>
+
+    <section class="section band">
+      <p class="eyebrow">The signal path</p>
+      <h2 class="section__title">Everything a bass line runs&nbsp;through.</h2>
+
+      <div class="chain__flow">
+        <article class="stage">
+          <span class="stage__idx">osc</span>
+          <h3 class="stage__name">Three oscillators</h3>
+          <p class="stage__desc">PolyBLEP saw &amp; square plus a dedicated sub — detune them, or hard-sync osc&nbsp;1 to osc&nbsp;2 for the growl.</p>
+        </article>
+        <span class="chain__arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <article class="stage">
+          <span class="stage__idx">flt</span>
+          <h3 class="stage__name">Ladder filter</h3>
+          <p class="stage__desc">A Moog-style 4-pole, switchable 12 or 24&nbsp;dB/oct, with resonance that climbs all the way to self-oscillation.</p>
+        </article>
+        <span class="chain__arrow" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h15m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <article class="stage">
+          <span class="stage__idx">amp</span>
+          <h3 class="stage__name">Amp &amp; out</h3>
+          <p class="stage__desc">A VCA shaped by its own envelope — the final gain stage that lets each note breathe and decay.</p>
+        </article>
+      </div>
+
+      <p class="chain__tap">↳ and tapping into that path —</p>
+      <div class="chain__mods">
+        <span class="mod"><b>Filter envelope</b> ADSR into cutoff, blended with velocity and key-tracking.</span>
+        <span class="mod"><b>Amp envelope</b> A second ADSR driving the VCA.</span>
+        <span class="mod"><b>LFO</b> Free-running or tempo-synced → pitch, filter or amp.</span>
+        <span class="mod"><b>Arpeggiator</b> Up, down or up-down, locked to host tempo.</span>
+      </div>
+    </section>
+
+    <section class="section band">
+      <p class="eyebrow">Drop it in</p>
+      <h2 class="section__title">From download to first note.</h2>
+      <ol class="steps">
+        <li>
+          <span class="steps__n">1</span>
+          <p><b>Open the installer.</b> Double-click <code>Fish-Station.pkg</code> and follow the prompts — it drops the VST3 and CLAP into <code>/Library/Audio/Plug-Ins</code>.</p>
+        </li>
+        <li>
+          <span class="steps__n">2</span>
+          <p><b>Rescan plug-ins in your DAW.</b> In Ableton: Settings → Plug-Ins → Rescan. Live loads the VST3; any CLAP host takes the CLAP.</p>
+        </li>
+        <li>
+          <span class="steps__n">3</span>
+          <p><b>Add Fish Station to a track</b> as an instrument, and play something low.</p>
+        </li>
+      </ol>
+      <p class="install__note">Requires macOS on Apple Silicon (arm64) — Intel Macs and Rosetta aren't supported.
+        Your saved patches live in <code>~/Library/Application Support/Fish Station/patches</code>.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Built from scratch in Rust · <span class="footer__deep">not a port or reverse-engineering of any product</span></p>
+    <p>© James McGrath · <a href="https://github.com/jamcgrath/fish-station/releases">Releases</a></p>
+  </footer>
+
 </div>
 </body>
 </html>
