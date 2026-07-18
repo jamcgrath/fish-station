@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fish Station — User Guide</title>
+<meta name="description" content="The Fish Station user guide: every control explained — oscillators, ladder filter, envelopes, LFO, and how the arpeggiator works (hold a chord).">
+<meta property="og:title" content="Fish Station — User Guide">
+<meta property="og:description" content="Every control on the panel, explained — including how the arpeggiator works.">
+<meta property="og:type" content="article">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --abyss:#05100b;   --deep:#081410;   --deep-2:#0c1c16;
+    --phosphor:#b6ea55; --sonar:#3fb6a6;  --brass:#cdaa6b;
+    --foam:#eef3e8;    --murk:#8b988a;    --hair:rgba(148,190,150,.14);
+    --display:'Archivo',system-ui,-apple-system,sans-serif;
+    --body:'Inter',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    font-family:var(--body); color:var(--foam); line-height:1.6;
+    background:
+      radial-gradient(140% 100% at 50% -20%, #123e31 0%, rgba(10,32,26,0) 52%),
+      radial-gradient(90% 60% at 88% 4%, rgba(63,182,166,.10) 0%, rgba(63,182,166,0) 60%),
+      linear-gradient(180deg,#0c231b 0%,#081713 40%,var(--abyss) 100%);
+    background-attachment:fixed; min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  a{color:var(--phosphor)}
+  :focus-visible{outline:2px solid var(--phosphor);outline-offset:3px;border-radius:4px}
+
+  /* ---- shared type devices (match the landing page) ---- */
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--sonar);display:inline-flex;gap:.7em;align-items:center;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,var(--sonar),transparent)}
+  .section__title{
+    font-family:var(--display);font-weight:800;letter-spacing:-.015em;line-height:1.04;
+    font-size:clamp(24px,4vw,36px);color:var(--foam);margin:16px 0 0;
+  }
+  .lede{margin:16px 0 0;max-width:60ch;font-size:16px;color:#cbd4c8}
+  .lede b{color:var(--foam);font-weight:600}
+
+  /* ---- top bar ---- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px;gap:16px}
+  .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .brand__mark{width:30px;height:30px;flex:none;filter:drop-shadow(0 0 6px rgba(182,234,85,.35))}
+  .brand__name{font-family:var(--display);font-weight:800;letter-spacing:.02em;font-size:19px;color:var(--foam)}
+  .topnav{display:flex;align-items:center;gap:10px}
+  .chip{font-family:var(--mono);font-size:12px;color:var(--brass);text-decoration:none;
+    border:1px solid rgba(205,170,107,.4);border-radius:999px;padding:6px 13px;letter-spacing:.04em;
+    white-space:nowrap;transition:border-color .15s ease,color .15s ease}
+  .chip:hover{border-color:var(--brass);color:var(--foam)}
+  .chip--active{color:var(--phosphor);border-color:rgba(182,234,85,.5)}
+
+  /* ---- guide hero ---- */
+  .ghero{padding:clamp(26px,5vw,54px) 0 clamp(20px,3vw,32px)}
+  .ghero__title{font-family:var(--display);font-weight:800;letter-spacing:-.02em;line-height:1.02;
+    font-size:clamp(38px,7vw,64px);color:var(--foam);margin:18px 0 0}
+  .ghero__title em{font-style:normal;color:var(--phosphor);text-shadow:0 0 30px rgba(182,234,85,.35)}
+
+  /* ---- table of contents ---- */
+  .toc{margin:26px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+  .toc a{font-family:var(--mono);font-size:12.5px;color:#c2ccc0;text-decoration:none;letter-spacing:.02em;
+    border:1px solid var(--hair);border-radius:8px;padding:7px 12px;transition:border-color .15s,color .15s}
+  .toc a:hover{border-color:rgba(63,182,166,.5);color:var(--foam)}
+
+  /* ---- sections ---- */
+  .section{padding:clamp(38px,6vw,64px) 0}
+  .band{border-top:1px solid var(--hair)}
+  .section__sub{margin:14px 0 0;max-width:64ch;font-size:15px;color:#c2ccc0}
+
+  /* ---- controls reference grid ---- */
+  .controls{display:grid;gap:12px;margin:28px 0 0;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .control{background:linear-gradient(180deg,rgba(18,34,27,.7),rgba(9,20,16,.7));
+    border:1px solid var(--hair);border-radius:12px;padding:16px 18px}
+  .control__name{font-family:var(--display);font-weight:600;font-size:16px;color:var(--foam);
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .control__vals{font-family:var(--mono);font-size:11.5px;font-weight:400;color:var(--brass);
+    letter-spacing:.02em;white-space:nowrap}
+  .control__desc{margin:7px 0 0;font-size:14px;color:#c2ccc0;line-height:1.5}
+  .control__desc code{font-family:var(--mono);font-size:.85em;background:rgba(63,182,166,.12);
+    color:var(--sonar);padding:1px 5px;border-radius:4px}
+
+  /* ---- callouts ---- */
+  .callout{margin:24px 0 0;border-radius:12px;padding:18px 20px;
+    background:rgba(182,234,85,.06);border:1px solid rgba(182,234,85,.32);
+    border-left-width:3px;font-size:15px;color:#dce6d4;line-height:1.6}
+  .callout b{color:var(--phosphor);font-weight:600}
+  .callout--warn{background:rgba(205,170,107,.06);border-color:rgba(205,170,107,.34)}
+  .callout--warn b{color:var(--brass)}
+  .callout__k{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    display:block;margin-bottom:6px}
+  .callout__k--tip{color:var(--phosphor)} .callout__k--gotcha{color:var(--brass)}
+
+  /* ---- arp modes ---- */
+  .modes{display:grid;gap:12px;margin:22px 0 0;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+  .modecard{background:rgba(63,182,166,.05);border:1px solid rgba(63,182,166,.18);border-radius:10px;padding:14px 16px}
+  .modecard b{color:var(--phosphor);font-family:var(--display);font-weight:600;font-size:15px;display:block}
+  .modecard span{font-size:13.5px;color:#c2ccc0}
+  .modecard .seq{font-family:var(--mono);font-size:12.5px;color:var(--sonar);margin-top:7px;display:block;letter-spacing:.03em}
+
+  /* ---- steps (quick start) ---- */
+  .steps{list-style:none;margin:26px 0 0;display:grid;gap:12px;max-width:760px}
+  .steps li{display:flex;gap:16px;align-items:flex-start;
+    background:linear-gradient(180deg,rgba(18,34,27,.55),rgba(9,20,16,.55));
+    border:1px solid var(--hair);border-radius:12px;padding:15px 18px}
+  .steps__n{flex:none;font-family:var(--mono);font-weight:500;font-size:14px;color:var(--phosphor);
+    width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+    border:1px solid rgba(182,234,85,.4);background:rgba(182,234,85,.06)}
+  .steps p{font-size:14.5px;color:#cbd4c8;line-height:1.55}
+  .steps b{color:var(--foam);font-weight:600}
+  code.k{font-family:var(--mono);font-size:.85em;background:rgba(63,182,166,.12);color:var(--sonar);
+    padding:1.5px 6px;border-radius:5px}
+
+  /* ---- footer ---- */
+  .footer{border-top:1px solid var(--hair);padding:30px 0 46px;
+    display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between}
+  .footer p{font-family:var(--mono);font-size:12px;color:var(--murk);letter-spacing:.03em;line-height:1.7}
+  .footer a{color:var(--sonar);text-decoration:none}
+  .footer__deep{color:var(--brass)}
+
+  .backtop{font-family:var(--mono);font-size:12px;color:var(--murk);text-decoration:none;margin-left:8px}
+
+  @media (max-width:640px){ .topbar{flex-wrap:wrap} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="7" cy="16" r="2.4" fill="#b6ea55"/>
+        <path d="M11 16a7 7 0 0 1 5-6.6" stroke="#b6ea55" stroke-width="2" stroke-linecap="round"/>
+        <path d="M11 16a7 7 0 0 0 5 6.6" stroke="#b6ea55" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+        <path d="M18 16a12 12 0 0 1 8.5-11.5" stroke="#3fb6a6" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+        <path d="M18 16a12 12 0 0 0 8.5 11.5" stroke="#3fb6a6" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+      </svg>
+      <span class="brand__name">Fish&nbsp;Station</span>
+    </a>
+    <nav class="topnav">
+      <a class="chip chip--active" href="guide.html">User&nbsp;Guide</a>
+      <a class="chip" href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="ghero">
+      <p class="eyebrow">Largemouth Bass Series · User Guide</p>
+      <h1 class="ghero__title">Every control,<br><em>explained</em>.</h1>
+      <p class="lede">Fish Station is a monophonic subtractive bass synth: three oscillators into a
+        Moog-style ladder filter, shaped by two envelopes, an LFO and an arpeggiator. Everything lives
+        on the front panel — this guide walks each section, top to bottom. Jump straight to the
+        <a href="#arp">arpeggiator</a> if that's what brought you here.</p>
+
+      <nav class="toc" aria-label="Sections">
+        <a href="#start">Quick start</a>
+        <a href="#osc">Oscillators</a>
+        <a href="#filter">Filter</a>
+        <a href="#env">Envelopes</a>
+        <a href="#lfo">LFO</a>
+        <a href="#arp">Arpeggiator</a>
+        <a href="#master">Master</a>
+        <a href="#patches">Patches</a>
+        <a href="#ui">Resize &amp; version</a>
+      </nav>
+    </section>
+
+    <section class="section band" id="start">
+      <p class="eyebrow">Quick start</p>
+      <h2 class="section__title">From load to first note.</h2>
+      <ol class="steps">
+        <li><span class="steps__n">1</span><p><b>Add Fish Station</b> to an instrument track and play a low note — you'll hear the default patch.</p></li>
+        <li><span class="steps__n">2</span><p><b>Shape the tone</b> with <b>Cutoff</b> and <b>Res</b> in the Filter section — that's where most of the character lives.</p></li>
+        <li><span class="steps__n">3</span><p><b>Try a factory patch</b> from the <b>Patch</b> menu at the top (Init · Sub Bass · Acid Lead), then tweak from there.</p></li>
+      </ol>
+      <p class="lede">It's monophonic by design — one note at a time, with last-note priority when you overlap keys.</p>
+    </section>
+
+    <section class="section band" id="osc">
+      <p class="eyebrow">Section 01 · Oscillators</p>
+      <h2 class="section__title">Three oscillators.</h2>
+      <p class="section__sub">Two band-limited (PolyBLEP) oscillators plus a dedicated sub, mixed together before the filter.</p>
+      <div class="controls">
+        <div class="control"><div class="control__name">Osc 1 <span class="control__vals">Saw / Square</span></div><p class="control__desc">The main oscillator's waveform. Saw is bright and buzzy; Square is hollow and reedy.</p></div>
+        <div class="control"><div class="control__name">Osc 1 · Level <span class="control__vals">0 – 1</span></div><p class="control__desc">How much of oscillator 1 is in the mix.</p></div>
+        <div class="control"><div class="control__name">Osc 2 <span class="control__vals">Saw / Square</span></div><p class="control__desc">The second oscillator's waveform. Detune it against Osc 1 for width and movement.</p></div>
+        <div class="control"><div class="control__name">Osc 2 · Level <span class="control__vals">0 – 1</span></div><p class="control__desc">How much of oscillator 2 is in the mix.</p></div>
+        <div class="control"><div class="control__name">Semi <span class="control__vals">−24 … +24 st</span></div><p class="control__desc">Coarse-tunes Osc 2 in semitones — a fifth (+7) or an octave (+12) thickens the sound.</p></div>
+        <div class="control"><div class="control__name">Fine <span class="control__vals">−50 … +50 ct</span></div><p class="control__desc">Fine-tunes Osc 2 in cents. A few cents of detune gives a slow, natural beating.</p></div>
+        <div class="control"><div class="control__name">Sub <span class="control__vals">0 – 1</span></div><p class="control__desc">Level of the sub oscillator — a square one octave below Osc 1. This is where the weight comes from.</p></div>
+        <div class="control"><div class="control__name">Osc Sync <span class="control__vals">On / Off</span></div><p class="control__desc">Hard-sync: restarts Osc 2 every time Osc 1 completes a cycle. Sweep Osc 2's <code>Semi</code> with sync on for the classic tearing sync lead.</p></div>
+      </div>
+    </section>
+
+    <section class="section band" id="filter">
+      <p class="eyebrow">Section 02 · Filter</p>
+      <h2 class="section__title">Moog-style ladder.</h2>
+      <p class="section__sub">A 4-pole transistor-ladder low-pass with resonance that climbs to self-oscillation. This is the heart of the sound.</p>
+      <div class="controls">
+        <div class="control"><div class="control__name">Slope <span class="control__vals">12 / 24 dB/oct</span></div><p class="control__desc">How steeply the filter cuts above the cutoff. 24 dB/oct is darker and more classic; 12 is gentler.</p></div>
+        <div class="control"><div class="control__name">Cutoff <span class="control__vals">20 Hz – 18 kHz</span></div><p class="control__desc">The frequency where the filter starts to cut. Lower for a rounder, darker bass; higher to open it up.</p></div>
+        <div class="control"><div class="control__name">Res <span class="control__vals">0 – 1</span></div><p class="control__desc">Resonance — emphasises frequencies around the cutoff. Near the top it self-oscillates into a whistle.</p></div>
+        <div class="control"><div class="control__name">Env Amt <span class="control__vals">−1 … +1</span></div><p class="control__desc">How much the <b>Filter Envelope</b> moves the cutoff. Bipolar — positive opens the filter over the note, negative closes it.</p></div>
+        <div class="control"><div class="control__name">Vel <span class="control__vals">0 – 1</span></div><p class="control__desc">Velocity → cutoff. Play harder to open the filter further.</p></div>
+        <div class="control"><div class="control__name">Keytrk <span class="control__vals">0 – 1</span></div><p class="control__desc">Key-tracking — higher notes open the filter more (relative to middle C), so the timbre stays even up the keyboard.</p></div>
+      </div>
+    </section>
+
+    <section class="section band" id="env">
+      <p class="eyebrow">Section 03 · Envelopes</p>
+      <h2 class="section__title">Two ADSRs.</h2>
+      <p class="section__sub">One shapes the volume, the other sweeps the filter. Each has Attack, Decay, Sustain, Release.</p>
+      <div class="controls">
+        <div class="control"><div class="control__name">Amp Envelope <span class="control__vals">A · D · S · R</span></div><p class="control__desc">Shapes each note's <b>volume</b>. <code>A</code> fade-in, <code>D</code> fall to the sustain level, <code>S</code> held level, <code>R</code> fade-out after release. Times run ~1 ms to 5 s.</p></div>
+        <div class="control"><div class="control__name">Filter Envelope <span class="control__vals">A · D · S · R</span></div><p class="control__desc">The same shape, but routed to the <b>cutoff</b> through the Filter's <code>Env Amt</code>. A fast decay with some Env Amt gives the classic filter "pluck".</p></div>
+      </div>
+      <div class="callout"><span class="callout__k callout__k--tip">Tip</span>
+        The Filter Envelope does nothing on its own — turn up <b>Env Amt</b> in the Filter section to hear it.</div>
+    </section>
+
+    <section class="section band" id="lfo">
+      <p class="eyebrow">Section 04 · LFO</p>
+      <h2 class="section__title">One modulator, three destinations.</h2>
+      <p class="section__sub">A low-frequency oscillator you can route to pitch, filter or amplitude — free-running or locked to your host's tempo.</p>
+      <div class="controls">
+        <div class="control"><div class="control__name">Wave <span class="control__vals">Sine/Tri/Saw/Square</span></div><p class="control__desc">The LFO's shape. Sine and triangle are smooth; saw and square step or ramp.</p></div>
+        <div class="control"><div class="control__name">Dest <span class="control__vals">Off/Pitch/Filter/Amp</span></div><p class="control__desc">Where it's routed. <b>Pitch</b> = vibrato (±2 st), <b>Filter</b> = cutoff wobble (±3 oct), <b>Amp</b> = tremolo. <b>Off</b> disables it.</p></div>
+        <div class="control"><div class="control__name">Amount <span class="control__vals">0 – 1</span></div><p class="control__desc">Depth of the modulation at the chosen destination.</p></div>
+        <div class="control"><div class="control__name">Rate <span class="control__vals">0.01 – 20 Hz</span></div><p class="control__desc">Speed when <b>Sync</b> is off.</p></div>
+        <div class="control"><div class="control__name">Sync <span class="control__vals">On / Off</span></div><p class="control__desc">Lock the LFO to host tempo. When on, <b>Div</b> sets the speed and <b>Rate</b> is ignored.</p></div>
+        <div class="control"><div class="control__name">Div <span class="control__vals">1/1 … 1/16</span></div><p class="control__desc">The synced cycle length — one full LFO cycle per division.</p></div>
+      </div>
+    </section>
+
+    <!-- ======================= ARPEGGIATOR ======================= -->
+    <section class="section band" id="arp">
+      <p class="eyebrow">Section 05 · Arpeggiator</p>
+      <h2 class="section__title">The arpeggiator.</h2>
+      <p class="section__sub">The arp plays the notes you're <b>holding</b>, one at a time, in a repeating pattern locked to your host's tempo.</p>
+
+      <div class="callout">
+        <span class="callout__k callout__k--tip">The one thing to know</span>
+        <b>Hold a chord.</b> The arp cycles the notes you currently hold — so if you hold a
+        <b>single</b> note, there's nothing to cycle and it simply retriggers that one note at the
+        Div rate (which can look like "it just repeats the same note"). Hold <b>two or more</b> notes
+        and it steps through them. Yes, even though Fish Station is monophonic: the arp is exactly how
+        a held chord becomes a moving, single-note bass line — the classic acid / techno trick.
+      </div>
+
+      <div class="callout callout--warn">
+        <span class="callout__k callout__k--gotcha">Gotcha</span>
+        Switching the arp <b>On clears any notes you were already holding</b>. Press your chord
+        <b>after</b> you turn the arp on, not before — otherwise it has nothing to play.
+      </div>
+
+      <h3 style="font-family:var(--display);font-weight:600;font-size:18px;color:var(--foam);margin:30px 0 0">Controls</h3>
+      <div class="controls">
+        <div class="control"><div class="control__name">Arp On <span class="control__vals">On / Off</span></div><p class="control__desc">Enables the arpeggiator. With it off, the synth plays normally (last-note priority).</p></div>
+        <div class="control"><div class="control__name">Mode <span class="control__vals">Up / Down / Up-Down</span></div><p class="control__desc">The order it steps through the held notes (see below).</p></div>
+        <div class="control"><div class="control__name">Div <span class="control__vals">1/1 … 1/16</span></div><p class="control__desc">Step length, synced to host tempo. 1/16 at 120 BPM = a sixteenth-note per step.</p></div>
+      </div>
+
+      <h3 style="font-family:var(--display);font-weight:600;font-size:18px;color:var(--foam);margin:30px 0 0">Modes</h3>
+      <p class="section__sub">Held notes are sorted low → high regardless of the order you pressed them. Say you hold C · E · G:</p>
+      <div class="modes">
+        <div class="modecard"><b>Up</b><span>Low to high, then wrap.</span><span class="seq">C · E · G · C · E · G …</span></div>
+        <div class="modecard"><b>Down</b><span>High to low, then wrap.</span><span class="seq">G · E · C · G · E · C …</span></div>
+        <div class="modecard"><b>Up-Down</b><span>Up then back, no repeated ends.</span><span class="seq">C · E · G · E · C · E …</span></div>
+      </div>
+
+      <div class="callout"><span class="callout__k callout__k--tip">Tips</span>
+        Steps follow the host tempo (it falls back to 120 BPM if the host doesn't report one). For a
+        crisp, plucky pattern give the <b>Amp Envelope</b> a short decay and low sustain, and add a
+        touch of <b>Filter Env Amt</b> so each step moves. Change chords while it runs and the pattern
+        follows along.</div>
+    </section>
+
+    <section class="section band" id="master">
+      <p class="eyebrow">Section 06 · Master</p>
+      <h2 class="section__title">Output.</h2>
+      <div class="controls">
+        <div class="control"><div class="control__name">Gain <span class="control__vals">−60 … 0 dB</span></div><p class="control__desc">Overall output level (default −6 dB). Fish Station has plenty of low-end weight — leave headroom.</p></div>
+      </div>
+    </section>
+
+    <section class="section band" id="patches">
+      <p class="eyebrow">Patches</p>
+      <h2 class="section__title">Save &amp; recall.</h2>
+      <p class="section__sub">The bar across the top of the panel is the patch browser.</p>
+      <div class="controls">
+        <div class="control"><div class="control__name">Patch menu</div><p class="control__desc">Load a <b>Factory</b> patch (Init · Sub Bass · Acid Lead — starting points to refine) or any patch you've saved.</p></div>
+        <div class="control"><div class="control__name">Save / Save As</div><p class="control__desc"><b>Save As</b> writes the current sound under a new name; <b>Save</b> overwrites the selected user patch.</p></div>
+        <div class="control"><div class="control__name">Init</div><p class="control__desc">Resets every control to the default patch — a clean slate to build from.</p></div>
+      </div>
+      <p class="lede">Your patches are stored as JSON in <code class="k">~/Library/Application&nbsp;Support/Fish&nbsp;Station/patches</code>.</p>
+    </section>
+
+    <section class="section band" id="ui">
+      <p class="eyebrow">The window</p>
+      <h2 class="section__title">Resize &amp; version.</h2>
+      <div class="controls">
+        <div class="control"><div class="control__name">UI Zoom <span class="control__vals">100 / 150 / 200%</span></div><p class="control__desc">Open the <b>⚙</b> menu (top-right of the panel) to scale the whole window. Handy on large displays.</p></div>
+        <div class="control"><div class="control__name">Version</div><p class="control__desc">The build version is printed under the wordmark in the header — quote it if you ever report a bug.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Built from scratch in Rust · <span class="footer__deep">not a port or reverse-engineering of any product</span></p>
+    <p>© James McGrath · <a href="index.html">Home</a> · <a href="https://github.com/jamcgrath/fish-station/releases">Releases</a></p>
+  </footer>
+
+</div>
+</body>
+</html>
