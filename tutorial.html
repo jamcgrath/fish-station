@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fish Station — Tutorials</title>
+<meta name="description" content="Step-by-step Fish Station tutorials: build a bass from scratch, a deep sub, a squelchy acid line with the arp, and tempo-synced movement.">
+<meta property="og:title" content="Fish Station — Tutorials">
+<meta property="og:description" content="Build real sounds step by step — from your first bass to an acid line.">
+<meta property="og:type" content="article">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --abyss:#05100b;   --deep:#081410;   --deep-2:#0c1c16;
+    --phosphor:#b6ea55; --sonar:#3fb6a6;  --brass:#cdaa6b;
+    --foam:#eef3e8;    --murk:#8b988a;    --hair:rgba(148,190,150,.14);
+    --display:'Archivo',system-ui,-apple-system,sans-serif;
+    --body:'Inter',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    font-family:var(--body); color:var(--foam); line-height:1.6;
+    background:
+      radial-gradient(140% 100% at 50% -20%, #123e31 0%, rgba(10,32,26,0) 52%),
+      radial-gradient(90% 60% at 88% 4%, rgba(63,182,166,.10) 0%, rgba(63,182,166,0) 60%),
+      linear-gradient(180deg,#0c231b 0%,#081713 40%,var(--abyss) 100%);
+    background-attachment:fixed; min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  a{color:var(--phosphor)}
+  :focus-visible{outline:2px solid var(--phosphor);outline-offset:3px;border-radius:4px}
+
+  /* ---- shared type devices (match the landing page + guide) ---- */
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.26em;
+    text-transform:uppercase;color:var(--sonar);display:inline-flex;gap:.7em;align-items:center;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,var(--sonar),transparent)}
+  .section__title{
+    font-family:var(--display);font-weight:800;letter-spacing:-.015em;line-height:1.04;
+    font-size:clamp(24px,4vw,36px);color:var(--foam);margin:16px 0 0;
+  }
+  .lede{margin:16px 0 0;max-width:60ch;font-size:16px;color:#cbd4c8}
+  .lede b{color:var(--foam);font-weight:600}
+
+  /* ---- top bar ---- */
+  .topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+    padding:22px 0 18px;gap:12px 16px}
+  .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .brand__mark{width:30px;height:30px;flex:none;filter:drop-shadow(0 0 6px rgba(182,234,85,.35))}
+  .brand__name{font-family:var(--display);font-weight:800;letter-spacing:.02em;font-size:19px;color:var(--foam)}
+  .topnav{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .chip{font-family:var(--mono);font-size:12px;color:var(--brass);text-decoration:none;
+    border:1px solid rgba(205,170,107,.4);border-radius:999px;padding:6px 13px;letter-spacing:.04em;
+    white-space:nowrap;transition:border-color .15s ease,color .15s ease}
+  .chip:hover{border-color:var(--brass);color:var(--foam)}
+  .chip--active{color:var(--phosphor);border-color:rgba(182,234,85,.5)}
+
+  /* ---- hero ---- */
+  .ghero{padding:clamp(26px,5vw,54px) 0 clamp(20px,3vw,32px)}
+  .ghero__title{font-family:var(--display);font-weight:800;letter-spacing:-.02em;line-height:1.02;
+    font-size:clamp(38px,7vw,64px);color:var(--foam);margin:18px 0 0}
+  .ghero__title em{font-style:normal;color:var(--phosphor);text-shadow:0 0 30px rgba(182,234,85,.35)}
+
+  /* ---- table of contents ---- */
+  .toc{margin:26px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+  .toc a{font-family:var(--mono);font-size:12.5px;color:#c2ccc0;text-decoration:none;letter-spacing:.02em;
+    border:1px solid var(--hair);border-radius:8px;padding:7px 12px;transition:border-color .15s,color .15s}
+  .toc a:hover{border-color:rgba(63,182,166,.5);color:var(--foam)}
+
+  /* ---- sections ---- */
+  .section{padding:clamp(38px,6vw,60px) 0}
+  .band{border-top:1px solid var(--hair)}
+  .section__sub{margin:14px 0 0;max-width:66ch;font-size:15px;color:#c2ccc0}
+  .section__sub b{color:var(--foam)}
+
+  /* ---- numbered steps ---- */
+  .steps{list-style:none;margin:26px 0 0;display:grid;gap:12px;max-width:820px}
+  .steps li{display:flex;gap:16px;align-items:flex-start;
+    background:linear-gradient(180deg,rgba(18,34,27,.55),rgba(9,20,16,.55));
+    border:1px solid var(--hair);border-radius:12px;padding:15px 18px}
+  .steps__n{flex:none;font-family:var(--mono);font-weight:500;font-size:14px;color:var(--phosphor);
+    width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+    border:1px solid rgba(182,234,85,.4);background:rgba(182,234,85,.06)}
+  .steps p{font-size:15px;color:#cbd4c8;line-height:1.55}
+  .steps b{color:var(--foam);font-weight:600}
+  code.k{font-family:var(--mono);font-size:.85em;background:rgba(63,182,166,.12);color:var(--sonar);
+    padding:1.5px 6px;border-radius:5px;white-space:nowrap}
+
+  /* ---- callouts ---- */
+  .callout{margin:22px 0 0;border-radius:12px;padding:16px 20px;max-width:820px;
+    background:rgba(182,234,85,.06);border:1px solid rgba(182,234,85,.32);
+    border-left-width:3px;font-size:15px;color:#dce6d4;line-height:1.6}
+  .callout b{color:var(--phosphor);font-weight:600}
+  .callout--warn{background:rgba(205,170,107,.06);border-color:rgba(205,170,107,.34)}
+  .callout--warn b{color:var(--brass)}
+  .callout__k{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    display:block;margin-bottom:6px}
+  .callout__k--tip{color:var(--phosphor)} .callout__k--gotcha{color:var(--brass)}
+
+  /* ---- "that's the factory preset" note ---- */
+  .preset{margin:18px 0 0;font-family:var(--mono);font-size:13px;color:var(--brass);letter-spacing:.02em}
+  .preset b{color:var(--phosphor);font-weight:500}
+
+  /* ---- footer ---- */
+  .footer{border-top:1px solid var(--hair);padding:30px 0 46px;
+    display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between}
+  .footer p{font-family:var(--mono);font-size:12px;color:var(--murk);letter-spacing:.03em;line-height:1.7}
+  .footer a{color:var(--sonar);text-decoration:none}
+  .footer__deep{color:var(--brass)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="7" cy="16" r="2.4" fill="#b6ea55"/>
+        <path d="M11 16a7 7 0 0 1 5-6.6" stroke="#b6ea55" stroke-width="2" stroke-linecap="round"/>
+        <path d="M11 16a7 7 0 0 0 5 6.6" stroke="#b6ea55" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+        <path d="M18 16a12 12 0 0 1 8.5-11.5" stroke="#3fb6a6" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+        <path d="M18 16a12 12 0 0 0 8.5 11.5" stroke="#3fb6a6" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+      </svg>
+      <span class="brand__name">Fish&nbsp;Station</span>
+    </a>
+    <nav class="topnav">
+      <a class="chip" href="guide.html">Guide</a>
+      <a class="chip chip--active" href="tutorial.html">Tutorials</a>
+      <a class="chip" href="index.html">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="ghero">
+      <p class="eyebrow">Largemouth Bass Series · Tutorials</p>
+      <h1 class="ghero__title">Make a sound,<br><em>step by step</em>.</h1>
+      <p class="lede">Four short walkthroughs — each one builds a real patch from <b>Init</b>, naming
+        the exact controls as you go. Start at the top if you're new; jump straight to a recipe if
+        you're not. Want to know what an individual knob does instead? That's the
+        <a href="guide.html">User Guide</a>.</p>
+
+      <nav class="toc" aria-label="Tutorials">
+        <a href="#first">1 · Your first bass</a>
+        <a href="#sub">2 · Deep sub bass</a>
+        <a href="#acid">3 · Acid line + arp</a>
+        <a href="#move">4 · Tempo-synced movement</a>
+      </nav>
+    </section>
+
+    <!-- 1 ------------------------------------------------------------ -->
+    <section class="section band" id="first">
+      <p class="eyebrow">Tutorial 01 · Your first bass</p>
+      <h2 class="section__title">Osc → filter → amp.</h2>
+      <p class="section__sub"><b>Goal:</b> a clean, playable bass — and a feel for how the signal
+        flows through the panel.</p>
+      <ol class="steps">
+        <li><span class="steps__n">1</span><p>From the top bar, open the <b>Patch</b> menu and choose <b>Init</b> — a clean starting point.</p></li>
+        <li><span class="steps__n">2</span><p>Set <b>Osc 1</b> to <b>Saw</b> and its <b>Level</b> to about <code class="k">0.8</code>. Play a low note — it's bright and buzzy.</p></li>
+        <li><span class="steps__n">3</span><p>In <b>Filter</b>, bring <b>Cutoff</b> down to roughly <code class="k">700 Hz</code> to tame the fizz, and nudge <b>Res</b> to <code class="k">~0.2</code> for a little edge.</p></li>
+        <li><span class="steps__n">4</span><p>Shape the <b>Amp Envelope</b>: short <b>Attack</b>, <b>Decay</b> <code class="k">~0.2 s</code>, <b>Sustain</b> <code class="k">~0.7</code>, <b>Release</b> <code class="k">~0.15 s</code> — so notes are punchy, not droney.</p></li>
+        <li><span class="steps__n">5</span><p>Add weight with <b>Sub</b> at <code class="k">~0.6</code>. That's a solid, usable bass.</p></li>
+      </ol>
+      <div class="callout"><span class="callout__k callout__k--tip">Rule of thumb</span>
+        Everything runs <b>Osc → Filter → Amp</b>. Too bright? Lower the <b>Cutoff</b>. Too clicky on
+        each note? Lengthen the amp <b>Attack</b> a touch.</div>
+    </section>
+
+    <!-- 2 ------------------------------------------------------------ -->
+    <section class="section band" id="sub">
+      <p class="eyebrow">Tutorial 02 · Deep sub bass</p>
+      <h2 class="section__title">Weight for the low end.</h2>
+      <p class="section__sub"><b>Goal:</b> a heavy, round sub that sits under a mix.</p>
+      <ol class="steps">
+        <li><span class="steps__n">1</span><p>Start from <b>Init</b>, then set <b>Osc 1</b> to <b>Square</b>.</p></li>
+        <li><span class="steps__n">2</span><p>Push <b>Sub</b> up to <code class="k">~0.95</code> — this is where the weight comes from (it's an octave below Osc 1).</p></li>
+        <li><span class="steps__n">3</span><p>Bring <b>Osc 2 Level</b> to <code class="k">~0.2</code> for a touch of body.</p></li>
+        <li><span class="steps__n">4</span><p>In <b>Filter</b>, set <b>Cutoff</b> low — <code class="k">~320 Hz</code> — for a dark, round tone, with <b>Res</b> at <code class="k">~0.35</code>.</p></li>
+        <li><span class="steps__n">5</span><p>Add a subtle attack thump: <b>Filter Env Amt</b> <code class="k">~0.4</code> with <b>Filter Decay</b> <code class="k">~0.25 s</code>.</p></li>
+        <li><span class="steps__n">6</span><p>Set <b>Amp Release</b> to <code class="k">~0.25 s</code> so notes taper instead of clicking off.</p></li>
+      </ol>
+      <p class="preset">↳ That's the factory <b>Sub&nbsp;Bass</b> patch — nudge Cutoff and Sub to taste.</p>
+    </section>
+
+    <!-- 3 ------------------------------------------------------------ -->
+    <section class="section band" id="acid">
+      <p class="eyebrow">Tutorial 03 · Acid line + arp</p>
+      <h2 class="section__title">Squelch &amp; movement.</h2>
+      <p class="section__sub"><b>Goal:</b> a squelchy, resonant acid line — then set it moving with the arpeggiator.</p>
+      <ol class="steps">
+        <li><span class="steps__n">1</span><p>From <b>Init</b>: <b>Osc 1</b> = <b>Saw</b>, <b>Slope</b> = <b>24 dB/oct</b>.</p></li>
+        <li><span class="steps__n">2</span><p>In <b>Filter</b>, set <b>Cutoff</b> <code class="k">~600 Hz</code> and crank <b>Res</b> to <code class="k">~0.8</code> — that's the squelch.</p></li>
+        <li><span class="steps__n">3</span><p>Dial the per-note "pew": <b>Filter Env Amt</b> <code class="k">~0.85</code>, <b>Filter Decay</b> <code class="k">~0.18 s</code>, <b>Filter Sustain</b> <code class="k">~0.1</code>.</p></li>
+        <li><span class="steps__n">4</span><p><b>Amp Sustain</b> <code class="k">~0.9</code> and <b>Sub</b> <code class="k">~0.3</code> for body. Play a line — every note squelches. <span style="color:var(--murk)">(That's the factory <b style="color:var(--phosphor);font-weight:500">Acid&nbsp;Lead</b>.)</span></p></li>
+        <li><span class="steps__n">5</span><p>Now make it move: turn <b>Arp On</b>, set <b>Div</b> to <b>1/16</b>, and <b>hold a chord</b> (e.g. C–E–G) <b>after</b> you switch the arp on. It cycles the held notes into a rolling acid pattern.</p></li>
+      </ol>
+      <div class="callout callout--warn"><span class="callout__k callout__k--gotcha">Arp gotcha</span>
+        The arp plays the notes you're <b>holding</b>, so a <b>single</b> note just repeats — you need
+        <b>two or more</b> held at once. And switching the arp on <b>clears</b> anything you were already
+        holding, so press your chord <b>after</b> enabling it. (More in the
+        <a href="guide.html#arp">Guide</a>.)</div>
+    </section>
+
+    <!-- 4 ------------------------------------------------------------ -->
+    <section class="section band" id="move">
+      <p class="eyebrow">Tutorial 04 · Tempo-synced movement</p>
+      <h2 class="section__title">Lock it to the beat.</h2>
+      <p class="section__sub"><b>Goal:</b> rhythmic filter movement that follows your DAW's tempo.</p>
+      <ol class="steps">
+        <li><span class="steps__n">1</span><p>Start from any bass patch you like (say the sub from Tutorial 2).</p></li>
+        <li><span class="steps__n">2</span><p>In the <b>LFO</b> section, set <b>Dest</b> to <b>Filter</b> and <b>Amount</b> to <code class="k">~0.5</code>.</p></li>
+        <li><span class="steps__n">3</span><p>Turn <b>Sync</b> <b>On</b> and set <b>Div</b> to <b>1/8</b> — the cutoff now wobbles in time with the track.</p></li>
+        <li><span class="steps__n">4</span><p>Try a triplet <b>Div</b> (<b>1/8T</b>) for a swung feel, or <b>1/16</b> for faster motion. <b>Wave</b> shapes the motion: Sine / Triangle glide, Square gates it on–off.</p></li>
+      </ol>
+      <div class="callout"><span class="callout__k callout__k--tip">Push it further</span>
+        Keep <b>Amount</b> modest for a groove, or crank it toward a dubstep-y wobble. The same LFO can
+        target <b>Pitch</b> (vibrato) or <b>Amp</b> (tremolo) instead — just change <b>Dest</b>.</div>
+    </section>
+
+    <section class="section band">
+      <p class="lede">That's the toolkit — oscillators, filter, envelopes, LFO and the arp, working
+        together. For a control-by-control reference, head to the <a href="guide.html">User Guide</a>;
+        to grab the plugin, the <a href="index.html">home page</a> has the download.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Built from scratch in Rust · <span class="footer__deep">not a port or reverse-engineering of any product</span></p>
+    <p>© James McGrath · <a href="index.html">Home</a> · <a href="guide.html">Guide</a> · <a href="https://github.com/jamcgrath/fish-station/releases">Releases</a></p>
+  </footer>
+
+</div>
+</body>
+</html>

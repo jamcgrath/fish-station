@@ -51,11 +51,11 @@
   .lede b{color:var(--foam);font-weight:600}
 
   /* ---- top bar ---- */
-  .topbar{display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px;gap:16px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:22px 0 18px;gap:12px 16px}
   .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
   .brand__mark{width:30px;height:30px;flex:none;filter:drop-shadow(0 0 6px rgba(182,234,85,.35))}
   .brand__name{font-family:var(--display);font-weight:800;letter-spacing:.02em;font-size:19px;color:var(--foam)}
-  .topnav{display:flex;align-items:center;gap:10px}
+  .topnav{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .chip{font-family:var(--mono);font-size:12px;color:var(--brass);text-decoration:none;
     border:1px solid rgba(205,170,107,.4);border-radius:999px;padding:6px 13px;letter-spacing:.04em;
     white-space:nowrap;transition:border-color .15s ease,color .15s ease}
@@ -121,7 +121,7 @@
   .steps p{font-size:14.5px;color:#cbd4c8;line-height:1.55}
   .steps b{color:var(--foam);font-weight:600}
   code.k{font-family:var(--mono);font-size:.85em;background:rgba(63,182,166,.12);color:var(--sonar);
-    padding:1.5px 6px;border-radius:5px}
+    padding:1.5px 6px;border-radius:5px;overflow-wrap:anywhere}
 
   /* ---- footer ---- */
   .footer{border-top:1px solid var(--hair);padding:30px 0 46px;
@@ -150,7 +150,8 @@
       <span class="brand__name">Fish&nbsp;Station</span>
     </a>
     <nav class="topnav">
-      <a class="chip chip--active" href="guide.html">User&nbsp;Guide</a>
+      <a class="chip chip--active" href="guide.html">Guide</a>
+      <a class="chip" href="tutorial.html">Tutorials</a>
       <a class="chip" href="index.html">Home</a>
     </nav>
   </header>
@@ -162,7 +163,8 @@
       <p class="lede">Fish Station is a monophonic subtractive bass synth: three oscillators into a
         Moog-style ladder filter, shaped by two envelopes, an LFO and an arpeggiator. Everything lives
         on the front panel — this guide walks each section, top to bottom. Jump straight to the
-        <a href="#arp">arpeggiator</a> if that's what brought you here.</p>
+        <a href="#arp">arpeggiator</a> if that's what brought you here. New to synths? The step-by-step
+        <a href="tutorial.html">Tutorials</a> build real sounds from scratch.</p>
 
       <nav class="toc" aria-label="Sections">
         <a href="#start">Quick start</a>
@@ -304,7 +306,7 @@
         <div class="control"><div class="control__name">Save / Save As</div><p class="control__desc"><b>Save As</b> writes the current sound under a new name; <b>Save</b> overwrites the selected user patch.</p></div>
         <div class="control"><div class="control__name">Init</div><p class="control__desc">Resets every control to the default patch — a clean slate to build from.</p></div>
       </div>
-      <p class="lede">Your patches are stored as JSON in <code class="k">~/Library/Application&nbsp;Support/Fish&nbsp;Station/patches</code>.</p>
+      <p class="lede">Your patches are stored as JSON in <code class="k">~/Library/Application Support/Fish Station/patches</code>.</p>
     </section>
 
     <section class="section band" id="ui">
